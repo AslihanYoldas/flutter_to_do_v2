@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_todo_v2/firebase_helper.dart';
+import 'package:flutter_firebase_todo_v2/constant.dart';
+import 'package:flutter_firebase_todo_v2/services/firebase_helper.dart';
 
 const List<String> tagList = <String>['Work', 'Personal', 'Other'];
 

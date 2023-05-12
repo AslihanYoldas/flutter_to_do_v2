@@ -1,37 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_todo_v2/constant.dart';
-import 'package:flutter_firebase_todo_v2/services/firebase_helper.dart';
+import 'package:flutter_firebase_todo_v2/services/auth.dart';
 
-const List<String> tag = <String>['Work', 'Personal', 'Other'];
-
-class NewTask extends StatefulWidget {
-   NewTask({Key? key}) : super(key: key);
-
+class CreateUser extends StatefulWidget {
+  const CreateUser({Key? key}) : super(key: key);
 
   @override
-  State<NewTask> createState() => _NewTaskState();
-
+  State<CreateUser> createState() => _CreateUserState();
 }
 
-class _NewTaskState extends State<NewTask> {
-  String selectedValue = tag.first;
-  final TextEditingController taskTitleController = TextEditingController();
-  final TextEditingController taskDescController = TextEditingController();
-
-  @override
-  void dispose() {
-    taskTitleController.dispose();
-    taskDescController.dispose();
-    super.dispose();
-  }
-
+class _CreateUserState extends State<CreateUser> {
   @override
   Widget build(BuildContext context) {
-      return AlertDialog(
+    TextEditingController nameController=TextEditingController();
+    TextEditingController emailController=TextEditingController();
+    TextEditingController passwordController=TextEditingController();
+
+    @override
+    void dispose() {
+      nameController.dispose();
+      emailController.dispose();
+      passwordController.dispose();
+    }
+
+    return AlertDialog(
       scrollable: true,
       title: const Text(
-        'New Task',
+        'New User',
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 16, color: Colors.brown),
       ),
@@ -42,16 +37,16 @@ class _NewTaskState extends State<NewTask> {
           child: Column(
             children: <Widget>[
               TextFormField(
-                controller: taskTitleController,
+                controller: nameController,
                 style: const TextStyle(fontSize: 14),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 20,
                   ),
-                  hintText: 'Task',
+                  hintText: 'Name',
                   hintStyle: const TextStyle(fontSize: 14),
-                  icon: const Icon(CupertinoIcons.square_list, color: Colors.blueGrey),
+                  icon: const Icon(CupertinoIcons.person_add, color: Colors.blueGrey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -59,7 +54,7 @@ class _NewTaskState extends State<NewTask> {
               ),
               const SizedBox(height: 15),
               TextFormField(
-                controller: taskDescController,
+                controller: emailController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 style: const TextStyle(fontSize: 14),
@@ -68,35 +63,33 @@ class _NewTaskState extends State<NewTask> {
                     horizontal: 20,
                     vertical: 20,
                   ),
-                  hintText: 'Description',
+                  hintText: 'e-mail',
                   hintStyle: const TextStyle(fontSize: 14),
-                  icon: const Icon(CupertinoIcons.bubble_left_bubble_right, color: Colors.blueGrey),
+                  icon: const Icon(CupertinoIcons.mail_solid, color: Colors.blueGrey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
               ),
               const SizedBox(height: 15),
-              Row(
-                children:  <Widget>[
-                  Icon(CupertinoIcons.tag, color: Colors.blueGrey),
-                  SizedBox(width: 15.0),
-                DropdownButton<String>(
-                    value: selectedValue,
-                    onChanged: (String? newValue){
-                      setState(() {
-                        selectedValue = newValue!;
-                      });
-                    },
-                  items: tag.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  )
-
-                ],
+              TextFormField(
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
+                controller: passwordController,
+                style: const TextStyle(fontSize: 14),
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 20,
+                  ),
+                  hintText: 'password',
+                  hintStyle: const TextStyle(fontSize: 14),
+                  icon: const Icon(CupertinoIcons.lock_fill, color: Colors.blueGrey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
               ),
             ],
           ),
@@ -114,16 +107,19 @@ class _NewTaskState extends State<NewTask> {
         ),
         ElevatedButton(
           onPressed: () {
-            create(taskTitleController.text, selectedValue, taskDescController.text);
+            createUser(nameController.text.trim(), emailController.text.trim(), passwordController.text.trim());
+
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('New Task Created'),
+              content: Text('New User Created'),
             ));
             Navigator.pop(context);
-            
+
           },
-          child: const Text('Save'),
+          child: const Text('Create'),
         ),
       ],
     );
   }
 }
+
+
