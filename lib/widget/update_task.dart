@@ -1,35 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_todo_v2/constant.dart';
-import 'package:flutter_firebase_todo_v2/services/firebase_helper.dart';
+import '../cubit/task_features/task_cubit.dart';
+import '../dependency_injection/locator.dart';
+import '../model/task_model.dart';
 
 const List<String> tagList = <String>['Work', 'Personal', 'Other'];
 
 class UpdateTask extends StatefulWidget {
-  String? id;
-  String? title;
-  String? desc;
-  String? tag;
+  Task task;
 
 
-  UpdateTask(this.id,this.title, this.desc, this.tag);
+  UpdateTask(this.task);
 
   @override
-  State<UpdateTask> createState() => _UpdateTaskState(id,title,desc,tag);
+  State<UpdateTask> createState() => _UpdateTaskState();
 
 }
 
 class _UpdateTaskState extends State<UpdateTask> {
-  String? id;
-  String? title;
-  String? desc;
-  String? tag;
+
   final TextEditingController taskTitleController = TextEditingController();
   final TextEditingController taskDescController = TextEditingController();
   String? selectedValue;
+  TaskCubit _task_view_model =locator.get<TaskCubit>();
 
 
-  _UpdateTaskState(this.id,this.title, this.desc, this.tag);
+  _UpdateTaskState();
   @override
   void dispose() {
     taskTitleController.dispose();
@@ -39,9 +35,10 @@ class _UpdateTaskState extends State<UpdateTask> {
 
   @override
   void initState() {
-    taskTitleController.text=title ?? '';
-    taskDescController.text=desc ?? '';
-    selectedValue = tag;
+    super.initState();
+    taskTitleController.text=widget.task.title ?? '';
+    taskDescController.text=widget.task.description ?? '';
+    selectedValue = widget.task.tag;
 
   }
 
@@ -134,7 +131,8 @@ class _UpdateTaskState extends State<UpdateTask> {
         ),
         ElevatedButton(
           onPressed: () {
-            update(widget.id!,taskTitleController.text, selectedValue!, taskDescController.text);
+            _task_view_model.updateTask(widget.task.idFb!,widget.task.idSql,taskTitleController.text, selectedValue!, taskDescController.text);
+
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Task Updated'),
             ));

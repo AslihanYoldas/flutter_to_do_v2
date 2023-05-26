@@ -1,57 +1,76 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_firebase_todo_v2/model/task_abstract.dart';
+import 'package:flutter_firebase_todo_v2/services/auth.dart';
 
-import '../constant.dart';
 import '../dependency_injection/locator.dart';
 import '../model/task_model.dart';
 
 
+class CustomFireabseHelper implements TaskAbstract  {
+  CollectionReference _ref;
 
-final _tasks= locator.get<CollectionReference>();
+  CustomFireabseHelper({
+    required CollectionReference reference,
+  }) : _ref = reference;
+
 
 //Firebasedeki datanın okunma listeye çevrilme işlemi
-Stream<List<Task>> read() {
+  @override
+  Future<List<Task>>? read() {
 
-  return _tasks.where("userId", isEqualTo: Constant.USER_ID).snapshots().map((querySnapshot) =>querySnapshot.docs.map((e)=> Task.fromSnapshot(e)).toList());
-  //return _tasks.snapshots().map((querySnapshot) => querySnapshot.docs.map((e) => Task.fromSnapshot(e)).toList());
-}
-Future update( String id,String title, String tag, String desc) async{
+    final query= _ref.where("userId", isEqualTo: locator.get<AuthHelper>().getUserId());
+    return query.get().then((QuerySnapshot querySnapshot) => querySnapshot.docs.map((e)=>Task.fromSnapshot(e)).toList());
 
-  final docRef=_tasks.doc(id);
-
-  final newtask=Task(Constant.USER_ID,id,title,tag,desc).toJson();
-  try{
-    await docRef.update(newtask);
-
-  }catch(e){
-    debugPrint('UPDATE Task ERROR $e');
+    //return null;
+    //return _tasks.snapshots().map((querySnapshot) => querySnapshot.docs.map((e) => Task.fromSnapshot(e)).toList());
   }
-}
+
+  @override
+  Future <bool> update(String id, String title, String tag, String desc) async {
+    final docRef = _ref.doc(id);
+
+    final newtask = Task.firebase(locator.get<AuthHelper>().getUserId(), id, title, tag, desc).toJson();
+    try {
+      await docRef.update(newtask);
+      return true;
+    } catch (e) {
+      debugPrint('UPDATE Task ERROR $e');
+      return false;
+    }
+  }
+
 //Kullanıcı alıp firebase kullanıcının eklenmesi
-Future create(String title, String tag, String desc) async{
-  final uid=_tasks.doc().id;
-  final docRef=_tasks.doc(uid);
+  @override
+  Future<bool> create(String title, String tag, String desc) async {
+    final uid = _ref
+        .doc()
+        .id;
+    final docRef = _ref.doc(uid);
 
-  final newTask=Task(Constant.USER_ID,uid,title,tag,desc).toJson();
-  try{
-    await docRef.set(newTask);
-
-  }catch(e){
-    debugPrint('CREATE Task ERROR $e');
+    final newTask = Task.firebase(locator.get<AuthHelper>().getUserId(), uid, title, tag, desc).toJson();
+    try {
+      await docRef.set(newTask);
+      return true;
+    } catch (e) {
+      debugPrint('CREATE Task ERROR $e');
+      return false;
+    }
   }
-}
-Future delete(String id) async{
 
-  final docRef=_tasks.doc(id);
+  @override
+  Future<bool> delete(String id) async {
+    final docRef = _ref.doc(id);
 
 
-  try{
-    await docRef.delete();
+    try {
+      await docRef.delete();
+      return true;
+    } catch (e) {
+      debugPrint('DELETE Task ERROR $e');
+      return false;
 
-  }catch(e){
-    debugPrint('DELETE Task ERROR $e');
+    }
   }
+
 }
-
-

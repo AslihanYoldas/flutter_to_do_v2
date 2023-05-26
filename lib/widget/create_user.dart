@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_todo_v2/services/auth.dart';
 
+import '../dependency_injection/locator.dart';
+
 class CreateUser extends StatefulWidget {
   const CreateUser({Key? key}) : super(key: key);
 
@@ -21,6 +23,7 @@ class _CreateUserState extends State<CreateUser> {
       nameController.dispose();
       emailController.dispose();
       passwordController.dispose();
+      super.dispose();
     }
 
     return AlertDialog(
@@ -107,13 +110,12 @@ class _CreateUserState extends State<CreateUser> {
         ),
         ElevatedButton(
           onPressed: () {
-            createUser(nameController.text.trim(), emailController.text.trim(), passwordController.text.trim());
+            locator.get<AuthHelper>().createUser(nameController.text.trim(), emailController.text.trim(), passwordController.text.trim());
 
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('New User Created'),
             ));
             Navigator.pop(context);
-
           },
           child: const Text('Create'),
         ),

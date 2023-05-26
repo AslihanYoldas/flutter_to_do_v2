@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_todo_v2/constant.dart';
-import 'package:flutter_firebase_todo_v2/services/firebase_helper.dart';
+
+import '../cubit/task_features/task_cubit.dart';
+import '../dependency_injection/locator.dart';
 
 const List<String> tag = <String>['Work', 'Personal', 'Other'];
 
@@ -18,6 +19,7 @@ class _NewTaskState extends State<NewTask> {
   String selectedValue = tag.first;
   final TextEditingController taskTitleController = TextEditingController();
   final TextEditingController taskDescController = TextEditingController();
+  TaskCubit _task_view_model= locator.get<TaskCubit>();
 
   @override
   void dispose() {
@@ -28,6 +30,7 @@ class _NewTaskState extends State<NewTask> {
 
   @override
   Widget build(BuildContext context) {
+
       return AlertDialog(
       scrollable: true,
       title: const Text(
@@ -114,12 +117,13 @@ class _NewTaskState extends State<NewTask> {
         ),
         ElevatedButton(
           onPressed: () {
-            create(taskTitleController.text, selectedValue, taskDescController.text);
+            _task_view_model.createTask(taskTitleController.text,selectedValue,taskDescController.text);
+
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('New Task Created'),
             ));
             Navigator.pop(context);
-            
+
           },
           child: const Text('Save'),
         ),
