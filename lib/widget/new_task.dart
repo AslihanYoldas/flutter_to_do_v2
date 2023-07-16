@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 
 import '../cubit/task_features/task_cubit.dart';
 import '../dependency_injection/locator.dart';
+import '../utils/utils.dart';
 
 const List<String> tag = <String>['Work', 'Personal', 'Other'];
 
 class NewTask extends StatefulWidget {
-   NewTask({Key? key}) : super(key: key);
+
+  final int selectedIndex;
+
+  NewTask({Key? key, required this.selectedIndex ,}) : super(key: key);
 
 
   @override
@@ -20,6 +24,7 @@ class _NewTaskState extends State<NewTask> {
   final TextEditingController taskTitleController = TextEditingController();
   final TextEditingController taskDescController = TextEditingController();
   TaskCubit _task_view_model= locator.get<TaskCubit>();
+
 
   @override
   void dispose() {
@@ -117,7 +122,16 @@ class _NewTaskState extends State<NewTask> {
         ),
         ElevatedButton(
           onPressed: () {
-            _task_view_model.createTask(taskTitleController.text,selectedValue,taskDescController.text);
+            String id=Utils.generateId();
+            switch(widget.selectedIndex){
+              case(0):
+                _task_view_model.createTaskSql(id,taskTitleController.text,selectedValue,taskDescController.text);
+                break;
+              case(1):
+                _task_view_model.createTaskFirebase(id,taskTitleController.text,selectedValue,taskDescController.text);
+                break;
+            }
+
 
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('New Task Created'),

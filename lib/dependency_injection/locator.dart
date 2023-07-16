@@ -6,6 +6,8 @@ import 'package:flutter_firebase_todo_v2/services/firebase_helper.dart';
 import 'package:flutter_firebase_todo_v2/services/sql_helper.dart';
 import 'package:get_it/get_it.dart';
 
+import '../cubit/login_features/login_cubit_.dart';
+
 final locator=GetIt.instance;
 
 class DependencyInjection{
@@ -37,6 +39,7 @@ class DependencyInjection{
 
   void provideCubit() {
     locator.registerLazySingleton<TaskCubit>(() => TaskCubit());
+    locator.registerLazySingleton<LoginCubit>(() => LoginCubit());
   }
 
 

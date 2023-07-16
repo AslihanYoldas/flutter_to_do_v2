@@ -12,30 +12,46 @@ class TaskCubit extends Cubit<TaskStates> {
 
   TaskCubit() :super(InitState());
 
-  Future<void> fetchTask() async {
-    //try {
+  Future<void> fetchTaskfirebase() async {
+    try {
       emit(LoadingState());
-      final responseFirebase = await _firebase.read();
-      final responseSql = await _sql.read();
-      //debugPrint('${responseSql.last.title}');
-      //debugPrint('${responseFirebase?.last.title}');
-      emit(ResponseState(responseFirebase!, responseSql));
-    //}
-   /* catch (e) {
+      var responseFirebase = await _firebase.read();
+      emit(ResponseState(responseFirebase!,1));
+    }
+    catch (e) {
       debugPrint('ERROR read : ${e.toString()}');
       emit(ErrorState(e.toString()));
-    }*/
+    }
   }
 
-  Future<void> updateTask(String idFb, String idSql, String title, String tag,
-      String desc) async {
+  Future<void> fetchTaskSql() async {
     try {
       emit(LoadingState());
-      _firebase.update(idFb, title, tag, desc);
-      _sql.update(idSql, title, desc, tag);
-      final responseFirebase = await _firebase.read();
-      final responseSql = await _sql.read();
-      emit(ResponseState(responseFirebase!, responseSql));
+      var responseSql = await _sql.read();
+      emit(ResponseState (responseSql,0));
+    }
+    catch (e) {
+      debugPrint('ERROR read : ${e.toString()}');
+      emit(ErrorState(e.toString()));
+    }
+  }
+
+  Future<void> updateTaskFirebase(String id, String title, String tag, String desc) async {
+    try {
+      emit(LoadingState());
+      await _firebase.update(id, title, tag, desc);
+      fetchTaskfirebase();
+    }
+    catch (e) {
+      debugPrint('ERROR : ${e.toString()}');
+      emit(ErrorState(e.toString()));
+    }
+  }
+  Future<void> updateTaskSql(String id, String title, String tag, String desc) async {
+    try {
+      emit(LoadingState());
+      await _sql.update(id, title, desc, tag);
+      fetchTaskSql();
     }
     catch (e) {
       debugPrint('ERROR : ${e.toString()}');
@@ -43,14 +59,44 @@ class TaskCubit extends Cubit<TaskStates> {
     }
   }
 
-  Future<void> deleteTask( String idSql,) async {
+  Future<void> deleteTaskFirebase(String id) async {
     try {
       emit(LoadingState());
-      //_firebase.delete(idFb);
-      _sql.delete(idSql);
-      final responseFirebase = await _firebase.read();
-      final responseSql = await _sql.read();
-      emit(ResponseState(responseFirebase!, responseSql));
+      await _firebase.delete(id);
+      fetchTaskfirebase();
+    }
+    catch (e) {
+      debugPrint('ERROR : ${e.toString()}');
+      emit(ErrorState(e.toString()));
+    }
+  }
+  Future<void> deleteTaskSql(String id) async {
+    try {
+      emit(LoadingState());
+      await _sql.delete(id);
+      fetchTaskSql();
+    }
+    catch (e) {
+      debugPrint('ERROR : ${e.toString()}');
+      emit(ErrorState(e.toString()));
+    }
+  }
+  Future<void> createTaskFirebase(String id, String title, String tag, String desc) async {
+    try {
+      emit(LoadingState());
+      await _firebase.create(id, title, tag, desc);
+      fetchTaskfirebase();
+    }
+    catch (e) {
+      debugPrint('ERROR : ${e.toString()}');
+      emit(ErrorState(e.toString()));
+    }
+  }
+  Future<void> createTaskSql(String id, String title, String tag, String desc) async {
+    try {
+      emit(LoadingState());
+      await _sql.create(id, title, desc,tag,);
+      fetchTaskSql();
     }
     catch (e) {
       debugPrint('ERROR : ${e.toString()}');
@@ -58,12 +104,8 @@ class TaskCubit extends Cubit<TaskStates> {
     }
   }
 
-  Future<void> createTask(String title, String tag, String desc) async {
-      _firebase.create(title, tag, desc);
-      _sql.create(title, desc, tag);
-      fetchTask();
-
-  }
 
 
 }
+
+

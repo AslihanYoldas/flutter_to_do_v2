@@ -7,7 +7,7 @@ import '../dependency_injection/locator.dart';
 import '../model/task_model.dart';
 
 
-class CustomFireabseHelper implements TaskAbstract  {
+class CustomFireabseHelper {
   CollectionReference _ref;
 
   CustomFireabseHelper({
@@ -20,6 +20,7 @@ class CustomFireabseHelper implements TaskAbstract  {
   Future<List<Task>>? read() {
 
     final query= _ref.where("userId", isEqualTo: locator.get<AuthHelper>().getUserId());
+    debugPrint("burda");
     return query.get().then((QuerySnapshot querySnapshot) => querySnapshot.docs.map((e)=>Task.fromSnapshot(e)).toList());
 
     //return null;
@@ -27,42 +28,46 @@ class CustomFireabseHelper implements TaskAbstract  {
   }
 
   @override
-  Future <bool> update(String id, String title, String tag, String desc) async {
+  Future<List<Task>?>? update(String id, String title, String tag, String desc) async {
     final docRef = _ref.doc(id);
 
-    final newtask = Task.firebase(locator.get<AuthHelper>().getUserId(), id, title, tag, desc).toJson();
+    final newtask = Task(locator.get<AuthHelper>().getUserId(), id, title, tag, desc).toJson();
     try {
       await docRef.update(newtask);
-      return true;
+      final query= _ref.where("userId", isEqualTo: locator.get<AuthHelper>().getUserId());
+      return query.get().then((QuerySnapshot querySnapshot) => querySnapshot.docs.map((e)=>Task.fromSnapshot(e)).toList());
+
     } catch (e) {
       debugPrint('UPDATE Task ERROR $e');
-      return false;
+      return null;
+
     }
   }
 
 //Kullanıcı alıp firebase kullanıcının eklenmesi
-  @override
-  Future<bool> create(String title, String tag, String desc) async {
-    final uid = _ref
-        .doc()
-        .id;
-    final docRef = _ref.doc(uid);
+  //@override
+  Future<List<Task>?>? create(String id,String title, String tag, String desc) async {
 
-    final newTask = Task.firebase(locator.get<AuthHelper>().getUserId(), uid, title, tag, desc).toJson();
+    final docRef = _ref.doc(id);
+
+    final newTask = Task(locator.get<AuthHelper>().getUserId(), id, title, tag, desc).toJson();
     try {
       await docRef.set(newTask);
-      return true;
+      final query= _ref.where("userId", isEqualTo: locator.get<AuthHelper>().getUserId());
+      return query.get().then((QuerySnapshot querySnapshot) => querySnapshot.docs.map((e)=>Task.fromSnapshot(e)).toList());
     } catch (e) {
       debugPrint('CREATE Task ERROR $e');
-      return false;
+      return null;
+
+
     }
   }
 
-  @override
+  //@override
   Future<bool> delete(String id) async {
     final docRef = _ref.doc(id);
-
-
+    debugPrint(id);
+    debugPrint(docRef.path);
     try {
       await docRef.delete();
       return true;

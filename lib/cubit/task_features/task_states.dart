@@ -12,9 +12,10 @@ class ErrorState extends TaskStates{
 }
 //This state responsible for holding the response
 class ResponseState extends TaskStates{
-  List<Task> taskFirebase;
-  List<Task> taskSql;
-  ResponseState (this.taskFirebase,this.taskSql);
+  List<Task> response;
+  int selectedIndex;
+
+  ResponseState (this.response, this.selectedIndex);
 }
 
 

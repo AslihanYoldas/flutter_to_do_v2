@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class Utils{
   Utils._();
@@ -15,4 +16,9 @@ class Utils{
     );
   }
 
+  static String generateId() {
+    var r = Random();
+    const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    return List.generate(7, (index) => _chars[r.nextInt(_chars.length)]).join();
+  }
 }

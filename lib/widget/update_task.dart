@@ -8,9 +8,10 @@ const List<String> tagList = <String>['Work', 'Personal', 'Other'];
 
 class UpdateTask extends StatefulWidget {
   Task task;
+  final int selectedIndex;
 
 
-  UpdateTask(this.task);
+  UpdateTask(this.task, this.selectedIndex);
 
   @override
   State<UpdateTask> createState() => _UpdateTaskState();
@@ -131,7 +132,15 @@ class _UpdateTaskState extends State<UpdateTask> {
         ),
         ElevatedButton(
           onPressed: () {
-            _task_view_model.updateTask(widget.task.idFb!,widget.task.idSql,taskTitleController.text, selectedValue!, taskDescController.text);
+            switch(widget.selectedIndex){
+              case(0):
+                _task_view_model.updateTaskSql(widget.task.id,taskTitleController.text, selectedValue!, taskDescController.text);
+                break;
+              case(1):
+                _task_view_model.updateTaskFirebase(widget.task.id,taskTitleController.text, selectedValue!, taskDescController.text);
+                break;
+            }
+
 
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Task Updated'),
