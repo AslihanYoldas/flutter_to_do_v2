@@ -1,157 +1,46 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase_todo_v2/utils/utils.dart';
-import 'package:flutter_firebase_todo_v2/widget/create_user.dart';
-
+import 'package:flutter_firebase_todo_v2/pages/login_page.dart';
 import '../../dependency_injection/locator.dart';
 import '../task_features/task_view.dart';
 import 'login_cubit_.dart';
 import 'login_states.dart';
 
 
-class LoginView extends StatefulWidget {
+class LoginView extends StatelessWidget {
 
 
   const LoginView({Key? key}):super(key: key);
 
-  @override
-  State<LoginView> createState() => _LoginViewState();
-}
 
-class _LoginViewState extends State<LoginView> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
 
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  @override
+@override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => locator.get<LoginCubit>(),
       child: buildScaffold(),);
   }
-    SafeArea buildScaffold() {
-      return  SafeArea(
-          child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.blueGrey,
-              centerTitle: true,
-              title: Text("LOG IN"),
-            ),
-            body: Container(
-              margin: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 10.0),
-              padding: EdgeInsets.all(10.0),
-              child: Container(
-                height: 350,
-                child: Column(children: [
-                  TextFormField(
-                    controller: emailController,
-                    style: const TextStyle(fontSize: 14),
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 20,
-                      ),
-                      hintText: 'Enter your e mail',
-                      hintStyle: const TextStyle(fontSize: 14),
-                      icon: const Icon(CupertinoIcons.mail_solid,
-                          color: Colors.blueGrey),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  TextFormField(
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    controller: passwordController,
-                    style: const TextStyle(fontSize: 14),
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 20,
-                      ),
-                      hintText: 'Enter your password',
-                      hintStyle: const TextStyle(fontSize: 14),
-                      icon: const Icon(CupertinoIcons.lock_fill,
-                          color: Colors.blueGrey),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  ElevatedButton(
-                      onPressed: () async {
-                        locator.get<LoginCubit>().getUser(
-                            emailController.text.toString().trim(),
-                            passwordController.text.toString().trim());
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueGrey,
-                          padding:
-                          EdgeInsets.symmetric(horizontal: 40, vertical: 10)),
-                      child: Text("LOG IN")),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Text(
-                    "If you don't have an account",
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                  TextButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueGrey,
-                      ),
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => CreateUser()));
-                        /*  Utils.navigate(
-                              context: context,
-                              routeName: '/createUser',
-                              arguments: null);*/
-                      },
-                      child: const Text(
-                        'Create New User',
-                        style: TextStyle(color: Colors.white),
-                      )),
-                  BlocConsumer<LoginCubit, LoginStates>(
-                    listener: (context, state) {
-                    },
-                    builder: (context, state) {
-                      debugPrint('STATE = ${state}');
 
-                      if (state is SuccessState) {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => TaskView()));
-                        /*Utils.navigate(
-                              context: context,
-                              routeName: '/task',
-                              arguments: null);*/
-                        return Text("SIGN IN SUCCESSFULL");
-                      }
+  BlocConsumer<LoginCubit, LoginStates> buildScaffold() {
+    return BlocConsumer<LoginCubit, LoginStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            debugPrint('STATE = ${state}');
 
-                      else if(state is FailState){
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("USER NOT FOUND:${state.message}"),
-                        ));
-                      }
-                      return Text("");
-                    },
-                  ),
-                ]),
-              ),
-            ),
-          )
-      );
-    }
+            if (state is InitState) {
+              return const LoginPage();
+            } else if (state is SuccessState) {
+              
+              return const TaskView();
+            } else if (state is FailState) {
+              return Text("USER NOT FOUND:${state.message}");
+
+            }
+            return const Text("HATA");
+          },
+
+    );
   }
+}
 

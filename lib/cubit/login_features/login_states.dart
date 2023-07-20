@@ -5,6 +5,8 @@ class InitState extends LoginStates{
 
 }
 
+
+
 class SuccessState extends LoginStates{
   User? user;
   SuccessState(this.user);
