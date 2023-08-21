@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../cubit/login_features/login_cubit_.dart';
 import '../dependency_injection/locator.dart';
+import '../utils/utils.dart';
 import '../widget/create_user.dart';
 
 class LoginPage extends StatefulWidget {
@@ -103,15 +104,10 @@ class _LoginPageState extends State<LoginPage> {
                               backgroundColor: Colors.blueGrey,
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CreateUser()));
-                              /*  Utils.navigate(
+                                Utils.navigate(
                                 context: context,
-                                routeName: '/createUser',
-                                arguments: null);*/
+                                routeName: '/createUser', arguments: null,
+                                );
                             },
                             child: const Text(
                               'Create New User',

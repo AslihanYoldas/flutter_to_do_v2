@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase_todo_v2/cubit/task_features/task_cubit.dart';
 import 'package:flutter_firebase_todo_v2/widget/new_task.dart';
 import '../dependency_injection/locator.dart';
+import '../model/route_argument.dart';
 import '../model/task_model.dart';
 import '../services/auth.dart';
 import '../utils/utils.dart';
@@ -41,8 +42,10 @@ class _TaskPageState extends State<TaskPage> {
           child: ListView.builder(
               itemCount: widget.responseData.length,
               itemBuilder: (context, index) {
+
+                Arg arg;
                 return Container(
-                  margin: EdgeInsets.symmetric(vertical: 5.0),
+                  margin: const EdgeInsets.symmetric(vertical: 5.0),
                   child: Card(
                     color: Colors.blueGrey.shade50,
                     child: ListTile(
@@ -51,8 +54,8 @@ class _TaskPageState extends State<TaskPage> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text("DELETE"),
-                                content: Text(
+                                title: const Text("DELETE"),
+                                content: const Text(
                                     "Are you sure you wan to delete?"),
                                 actions: [
                                   ElevatedButton(
@@ -96,19 +99,10 @@ class _TaskPageState extends State<TaskPage> {
                       trailing: InkWell(
                           onTap: () =>
                           {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        UpdateTask(Task(
-                                            locator.get<AuthHelper>()
-                                                .getUserId(),
-                                            widget.responseData[index].id,
-                                            widget.responseData[index].title!,
-                                          widget.responseData[index].tag,
-                                            widget.responseData[index].description,
-                                            ),widget.selectedIndex))
-                            )},
+
+                          Utils.navigate(context: context, routeName: '/updateTask', arguments:Arg(Task(locator.get<AuthHelper>().getUserId(), widget.responseData[index].id, widget.responseData[index].title!, widget.responseData[index].tag, widget.responseData[index].description,),widget.selectedIndex),
+                            )
+                      },
                           child: Icon(Icons.edit)),
                     ),
                   ),
@@ -118,11 +112,12 @@ class _TaskPageState extends State<TaskPage> {
       ),
       Container(
         alignment: Alignment.bottomRight,
-        margin: EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(10.0),
         child: FloatingActionButton(
 
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => NewTask(selectedIndex: widget.selectedIndex )));
+            Utils.navigate(context: context, routeName: '/newTask', arguments:Arg(null ,widget.selectedIndex),
+               );
           },
           child: Icon(
             Icons.add,

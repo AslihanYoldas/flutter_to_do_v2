@@ -7,8 +7,8 @@ import '../model/task_model.dart';
 const List<String> tagList = <String>['Work', 'Personal', 'Other'];
 
 class UpdateTask extends StatefulWidget {
-  Task task;
-  final int selectedIndex;
+  Task? task;
+  final int? selectedIndex;
 
 
   UpdateTask(this.task, this.selectedIndex);
@@ -37,9 +37,9 @@ class _UpdateTaskState extends State<UpdateTask> {
   @override
   void initState() {
     super.initState();
-    taskTitleController.text=widget.task.title ?? '';
-    taskDescController.text=widget.task.description ?? '';
-    selectedValue = widget.task.tag;
+    taskTitleController.text=widget.task?.title ?? '';
+    taskDescController.text=widget.task?.description ?? '';
+    selectedValue = widget.task?.tag;
 
   }
 
@@ -134,10 +134,10 @@ class _UpdateTaskState extends State<UpdateTask> {
           onPressed: () {
             switch(widget.selectedIndex){
               case(0):
-                _task_view_model.updateTaskSql(widget.task.id,taskTitleController.text, selectedValue!, taskDescController.text);
+                _task_view_model.updateTaskSql(widget.task!.id,taskTitleController.text, selectedValue!, taskDescController.text);
                 break;
               case(1):
-                _task_view_model.updateTaskFirebase(widget.task.id,taskTitleController.text, selectedValue!, taskDescController.text);
+                _task_view_model.updateTaskFirebase(widget.task!.id,taskTitleController.text, selectedValue!, taskDescController.text);
                 break;
             }
 

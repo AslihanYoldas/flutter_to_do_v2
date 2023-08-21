@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_firebase_todo_v2/route/route_generator.dart';
 import 'package:flutter_firebase_todo_v2/services/auth.dart';
 import 'cubit/task_features/task_view.dart';
 import 'dependency_injection/locator.dart';
@@ -19,8 +20,8 @@ Future<void> main() async {
 
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
-      //onGenerateRoute: RouteGenerator.generateRoute,
-      home:locator.get<AuthHelper>().isUserSigned() ?TaskView():LoginView()
+      onGenerateRoute: RouteGenerator.generateRoute,
+      home:locator.get<AuthHelper>().isUserSigned() ?const TaskView():const LoginView()
 
   ));
 }

@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import '../model/route_argument.dart';
+import '../model/task_model.dart';
+
 class Utils{
   Utils._();
 
-  static navigate({required BuildContext context, required String routeName, required arguments}){
-    Navigator.of(context).pushNamed(routeName);
+  static navigate({required BuildContext context, required String routeName, required  Arg? arguments}){
+
+    Navigator.pushNamed(
+      context,
+      routeName,
+      arguments:Arg(
+        arguments?.task,
+        arguments?.selectedIndex
+      ),
+    );
   }
 
   static Center buildLoading() {

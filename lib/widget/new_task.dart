@@ -23,7 +23,7 @@ class _NewTaskState extends State<NewTask> {
   String selectedValue = tag.first;
   final TextEditingController taskTitleController = TextEditingController();
   final TextEditingController taskDescController = TextEditingController();
-  TaskCubit _task_view_model= locator.get<TaskCubit>();
+  final TaskCubit _task_view_model= locator.get<TaskCubit>();
 
 
   @override
@@ -133,7 +133,7 @@ class _NewTaskState extends State<NewTask> {
             }
 
 
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text('New Task Created'),
             ));
             Navigator.pop(context);

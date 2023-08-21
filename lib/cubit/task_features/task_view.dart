@@ -5,9 +5,10 @@ import 'package:flutter_firebase_todo_v2/cubit/login_features/login_view.dart';
 import 'package:flutter_firebase_todo_v2/cubit/task_features/task_cubit.dart';
 import 'package:flutter_firebase_todo_v2/cubit/task_features/task_states.dart';
 import '../../dependency_injection/locator.dart';
+import '../../model/route_argument.dart';
 import '../../services/auth.dart';
-import '../../utils/utils.dart';
 import '../../pages/to_do_page.dart';
+import '../../utils/utils.dart';
 
 class TaskView extends StatefulWidget {
   const TaskView({Key? key}) : super(key: key);
@@ -33,13 +34,12 @@ class _TaskViewState extends State<TaskView> {
           centerTitle: true,
           actions: <Widget>[
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.exit_to_app,
                 color: Colors.white,
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginView()));
-                // Utils.navigate(context: context, routeName: '/login', arguments: null);
+                 Utils.navigate(context: context, routeName: '/login', arguments: Arg(null,null));
                 locator.get<AuthHelper>().signOut();
               },
             )
@@ -57,7 +57,7 @@ class _TaskViewState extends State<TaskView> {
            debugPrint("sql");
          }
          else if (state is LoadingState) {
-           //return buildLoading();
+           return buildLoading();
 
          } else if (state is ResponseState) {
            debugPrint("RESPONSE ");
