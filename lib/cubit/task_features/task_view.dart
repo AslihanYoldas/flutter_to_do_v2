@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_todo_v2/cubit/login_features/login_cubit_.dart';
 import 'package:flutter_firebase_todo_v2/cubit/login_features/login_view.dart';
 import 'package:flutter_firebase_todo_v2/cubit/task_features/task_cubit.dart';
 import 'package:flutter_firebase_todo_v2/cubit/task_features/task_states.dart';
@@ -30,6 +31,7 @@ class _TaskViewState extends State<TaskView> {
   Scaffold buildScaffold() {
    return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading:false,
           backgroundColor: Colors.blueGrey,
           centerTitle: true,
           actions: <Widget>[
@@ -39,8 +41,10 @@ class _TaskViewState extends State<TaskView> {
                 color: Colors.white,
               ),
               onPressed: () {
-                 Utils.navigate(context: context, routeName: '/login', arguments: Arg(null,null));
+                debugPrint("exit");
                 locator.get<AuthHelper>().signOut();
+                locator.get<LoginCubit>().Init();
+                //Utils.navigate(context: context, routeName: '/login', arguments: null);
               },
             )
           ],

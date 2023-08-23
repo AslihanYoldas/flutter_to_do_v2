@@ -6,7 +6,6 @@ import '../model/route_argument.dart';
 import '../model/task_model.dart';
 import '../services/auth.dart';
 import '../utils/utils.dart';
-import '../widget/update_task.dart';
 
 const List<Color> colorList = <Color>[Colors.green, Colors.blue, Colors.orange];
 
@@ -23,8 +22,6 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-
-
 
   void _navigateBottomBar(int index){
     setState(() {
@@ -43,7 +40,6 @@ class _TaskPageState extends State<TaskPage> {
               itemCount: widget.responseData.length,
               itemBuilder: (context, index) {
 
-                Arg arg;
                 return Container(
                   margin: const EdgeInsets.symmetric(vertical: 5.0),
                   child: Card(
@@ -99,9 +95,9 @@ class _TaskPageState extends State<TaskPage> {
                       trailing: InkWell(
                           onTap: () =>
                           {
-
-                          Utils.navigate(context: context, routeName: '/updateTask', arguments:Arg(Task(locator.get<AuthHelper>().getUserId(), widget.responseData[index].id, widget.responseData[index].title!, widget.responseData[index].tag, widget.responseData[index].description,),widget.selectedIndex),
-                            )
+                            locator.get<Arg>().setTask(Task(locator.get<AuthHelper>().getUserId(), widget.responseData[index].id, widget.responseData[index].title!, widget.responseData[index].tag, widget.responseData[index].description)),
+                            locator.get<Arg>().setSelectedIndex(widget.selectedIndex),
+                            Utils.navigate(context: context, routeName: '/updateTask', arguments:locator.get<Arg>())
                       },
                           child: Icon(Icons.edit)),
                     ),
@@ -116,7 +112,9 @@ class _TaskPageState extends State<TaskPage> {
         child: FloatingActionButton(
 
           onPressed: () {
-            Utils.navigate(context: context, routeName: '/newTask', arguments:Arg(null ,widget.selectedIndex),
+            locator.get<Arg>().setSelectedIndex(widget.selectedIndex);
+
+            Utils.navigate(context: context, routeName: '/newTask', arguments:locator.get<Arg>(),
                );
           },
           child: Icon(

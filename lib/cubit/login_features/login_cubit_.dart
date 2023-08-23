@@ -19,9 +19,18 @@ class LoginCubit extends Cubit<LoginStates> {
       emit(SuccessState(responseFirebase));
     }
     catch (e) {
-      debugPrint('ERROR  : ${e.toString()}');
-      emit(FailState(e.toString()));
+      String error=e.toString();
+      debugPrint('ERROR  : $error');
+      int endIndex = error.indexOf(']');
+
+      String str = error.substring( endIndex+1);
+      emit(FailState(str));
     }
+  }
+  Future<void> Init() async {
+    emit(InitState());
+
+
   }
 }
 

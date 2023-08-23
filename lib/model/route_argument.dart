@@ -8,4 +8,11 @@ class Arg{
 
   Arg(this.task,this.selectedIndex);
 
+
+  void setTask(Task task){
+    this.task=task;
+  }
+  void setSelectedIndex(int selectedIndex){
+    this.selectedIndex=selectedIndex;
+  }
 }

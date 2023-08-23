@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_firebase_todo_v2/cubit/task_features/task_cubit.dart';
+import 'package:flutter_firebase_todo_v2/model/task_model.dart';
 import 'package:flutter_firebase_todo_v2/services/auth.dart';
 import 'package:flutter_firebase_todo_v2/services/firebase_helper.dart';
 import 'package:flutter_firebase_todo_v2/services/sql_helper.dart';
 import 'package:get_it/get_it.dart';
 
 import '../cubit/login_features/login_cubit_.dart';
+import '../model/route_argument.dart';
 
 final locator=GetIt.instance;
 
@@ -17,6 +19,7 @@ class DependencyInjection{
     provideAuth();
     provideHelpers();
     provideCubit();
+    provideArg();
 
   }
   void provideTask(){
@@ -41,6 +44,10 @@ class DependencyInjection{
     locator.registerLazySingleton<TaskCubit>(() => TaskCubit());
     locator.registerLazySingleton<LoginCubit>(() => LoginCubit());
   }
+  void provideArg() {
+    locator.registerLazySingleton<Arg>(() => Arg(null,null));
+  }
+
 
 
 
