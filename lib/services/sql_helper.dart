@@ -1,13 +1,13 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_firebase_todo_v2/dependency_injection/locator.dart';
-import 'package:flutter_firebase_todo_v2/model/task_abstract.dart';
+import 'package:flutter_firebase_todo_v2/model/database_helper_interface.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
 import '../model/task_model.dart';
 import 'auth.dart';
 
-class SqlHelper  {
+class SqlHelper implements DatabaseHelper  {
   //creating database table item
    Future<void> createTables(sql.Database database) async{
     await database.execute(
@@ -34,16 +34,15 @@ class SqlHelper  {
   }
 
   @override
-   Future<List<Task>?>? create(String id,String title, String ?description,String ? tag) async{
+   Future<bool> create(String id,String title, String ?description,String ? tag) async{
      try{
        final db=await locator.get<SqlHelper>().db();
        //You have to insert map format
        final data={'userId':locator.get<AuthHelper>().getUserId(),'id':id, 'title':title , 'tag':tag,'description':description,};
-       debugPrint("aaaaaaaaaaaaaaaaaaaaaaaa $data");
-
        await db.insert('tasks',data,conflictAlgorithm:sql.ConflictAlgorithm.replace);
-       final List<Map<String, dynamic>> maps= await db.query('tasks', where:"userId= ?",whereArgs: [ locator.get<AuthHelper>().getUserId()],limit:10);
-       return List.generate(maps.length, (i) {
+       return true;
+       //final List<Map<String, dynamic>> maps= await db.query('tasks', where:"userId= ?",whereArgs: [ locator.get<AuthHelper>().getUserId()],limit:10);
+       /*return List.generate(maps.length, (i) {
          return Task(
            maps[i]['userId'],
            maps[i]['id'],
@@ -51,9 +50,9 @@ class SqlHelper  {
            maps[i]['tag'],
            maps[i]['description'],
          );
-       });
+       });*/
      }catch(e){
-       return null;
+       return false;
      }
 
 
