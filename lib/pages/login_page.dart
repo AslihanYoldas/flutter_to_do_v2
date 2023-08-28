@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../cubit/login_features/login_cubit_.dart';
 import '../dependency_injection/locator.dart';
 import '../utils/utils.dart';
-import '../widget/create_user.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -14,6 +13,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final textFieldFocusNode = FocusNode();
+  bool _obscured = false;
+  void _toggleObscured() {
+    setState(() {
+      _obscured = !_obscured;
+      if (textFieldFocusNode.hasPrimaryFocus) return; // If focus is on text field, dont unfocus
+      textFieldFocusNode.canRequestFocus = false;     // Prevents focus if tap on eye
+    });
+  }
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -56,29 +64,58 @@ class _LoginPageState extends State<LoginPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: const BorderSide(
+                                color: Colors.black54,
+                                width: 2.0,
+                              ),
                           ),
                         ),
+                        ),
                         const SizedBox(height: 15),
-                        TextFormField(
-                          obscureText: true,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          controller: passwordController,
-                          style: const TextStyle(fontSize: 14),
-                          decoration: InputDecoration(
+                      TextFormField(
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: _obscured,
+                        controller: passwordController,
+                        decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 20,
                               vertical: 20,
                             ),
-                            hintText: 'Enter your password',
-                            hintStyle: const TextStyle(fontSize: 14),
-                            icon: const Icon(CupertinoIcons.lock_fill,
-                                color: Colors.blueGrey),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
+                          hintText: 'Enter your password',
+                          hintStyle: const TextStyle(fontSize: 14),
+                          icon: const Icon(CupertinoIcons.lock_fill,
+                            color: Colors.blueGrey,
+                          ),
+
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                            child: GestureDetector(
+                              onTap: _toggleObscured,
+                              child: Icon(
+                                _obscured
+                                    ? Icons.visibility_rounded
+                                    : Icons.visibility_off_rounded,
+                                size: 27,
+                                color: Colors.black54,
+                              ),
                             ),
                           ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: const BorderSide(
+                              color: Colors.black54,
+                              width: 2.0,
+                            ),
+
+
                         ),
+                      ),
+                      ),
                         SizedBox(
                           height: 20.0,
                         ),
