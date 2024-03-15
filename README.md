@@ -4,8 +4,9 @@ A Flutter to-do list app that performs CRUD (Create, Read, Update, Delete) opera
 
 ## Feautures
 - Firebase Authentication: Implements user authentication using Firebase for secure login.
-- CRUD Operations: Allows users to create, read, update, and delete tasks locally and on Firebase Cloud Firestore.
-- SQLite Local Storage: Utilizes SQLite for efficient local data storage and retrieval.
+- CRUD Operations: Allows users to create, read, update, and delete tasks locally and on Firebase Cloud Firestore in real time.
+- SQLite Local Storage: Utilizes SQLite for local data storage and retrieval.
+- Firebase Cloud Firestore: Utilizes Firebase for remote data storage and retrieval.
 - Cubit State Management: Implements the Cubit pattern for effective state management.
 - Dependency Injection: Utilizes dependency injection for organized and scalable code.
 - Route Generator: Includes a route generator for smooth navigation between different screens.
@@ -40,9 +41,22 @@ flutter run
 ``` 
 
 ## Screenshots
+### Login page 
+- You can create new user
+- You can login to your existing account
+- You can make your password invisible/visible by pressing the eye icon
 
 <img src="screen_shots/login_page.jpeg" alt="login_page" width="200"/>
 <img src="screen_shots/create_user.jpeg" alt="create_user" width="200"/>
+
+### Main Page
+- You can change which source you want to store your data locally or remote on bottom navigation bar
+- You can add new tasks by pressing the "+" button
+- In new task widget you can add title, description and category (work,personal,other) to your task
+- You can delete your task by pressing long
+- You can update your task by pressing the pencil icon on your task
+- You can log out by pressing exit icon on the bar at the top right position
+
 <img src="screen_shots/firebase_main_page.jpeg" alt="firebase_main_page" width="200"/>
 <img src="screen_shots/sql_main_page.jpeg" alt="sql_main_page" width="200"/>
 <img src="screen_shots/new_task.jpeg" alt="new_task" width="200"/>
