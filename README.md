@@ -1,6 +1,6 @@
-# Flutter To-Do List App with Firebase
+# Flutter To-Do List App 
 
-A Flutter to-do list app that performs CRUD (Create, Read, Update, Delete) operations with SQLite and Firebase Cloud Firestore using cubit state management.
+A Flutter to-do list app that performs CRUD (Create, Read, Update, Delete) operations on SQLite and Firebase Cloud Firestore using cubit state management and dependency injection. The app also uses Firebase Authentication for login.
 
 ## Feautures
 - Firebase Authentication: Implements user authentication using Firebase for secure login.
@@ -27,15 +27,7 @@ cd flutter_to_do_v2
 ```
 flutter pub get
 ```
-4. Configure Firebase (Optional):
-
-If you want to see the firebase authentication or firebase cloud firestore console you can create your own flutter project on Firebase and connect to the local project. Then you can implement authentication and cloud firestore by following the given instructions.
-If you need help you can look at this documentations:
-- [Add-Firebase-to-your-flutter-project](https://firebase.google.com/docs/flutter/setup?platform=android)
-- [Get-Started-with-Firebase-Authentication-on-Flutter](https://firebase.google.com/docs/auth/flutter/start)
-- [Get-started-with-Cloud-Firestore](https://firebase.google.com/docs/firestore/quickstart#dart)
-
-5. Run the app:
+4. Run the app:
 
 ``` 
 flutter run
@@ -69,7 +61,10 @@ flutter run
 
 
 ## Acknowledgments
-- Firebase for providing the authentication and Cloud Firestore services. [Firebase-link](https://firebase.google.com/)
+- Firebase for providing the authentication and Cloud Firestore services. 
+    - [Firebase-link](https://firebase.google.com/)
+    - [Firebase-auth-link](https://firebase.google.com/products/auth/)
+    - [Firebase-firestore-link](https://firebase.google.com/products/firestore/)
 - SQLite for local data storage. ([sqflite link](https://pub.dev/packages/sqflite))
 - flutter_bloc package for the Cubit state management. ([block link](https://pub.dev/packages/flutter_bloc))
 - get_it package for dependency injection. ([get_it link](https://pub.dev/packages/get_it))
