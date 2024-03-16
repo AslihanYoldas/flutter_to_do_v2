@@ -45,9 +45,10 @@ flutter run
 - You can create a new user.
 - You can log in to your existing account.
 - You can toggle the visibility of your password by pressing the eye icon.
-
-<img src="screen_shots/login_page.jpeg" alt="login_page" width="200"/>
+<p float="left">
+<img src="screen_shots/login_page.jpeg" alt="login_page" width="200"/> 
 <img src="screen_shots/create_user.jpeg" alt="create_user" width="200"/>
+</p>
 
 ### Main Page
 - You can switch between storing your data locally or remotely by using the bottom navigation bar.
@@ -57,11 +58,14 @@ flutter run
 - To update a task, press the pencil icon on the task.
 - You can log out by pressing the exit icon located at the top right corner of the screen.
 
+<p float="left">
 <img src="screen_shots/firebase_main_page.jpeg" alt="firebase_main_page" width="200"/>
 <img src="screen_shots/sql_main_page.jpeg" alt="sql_main_page" width="200"/>
 <img src="screen_shots/new_task.jpeg" alt="new_task" width="200"/>
 <img src="screen_shots/delete_task.jpeg" alt="delete_task" width="200"/>
 <img src="screen_shots/update_task.jpeg" alt="update_task" width="200"/>
+</p>
+
 
 ## Acknowledgments
 - Firebase for providing the authentication and Cloud Firestore services.
