@@ -16,23 +16,24 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
 ``` 
-git clone https://github.com/AslihanYoldas/https://github.com/AslihanYoldas/flutter_to_do_v2.git
+git clone https://github.com/AslihanYoldas/flutter_to_do_v2.git
 ```
 2. Navigate to the project directory:
 
 ```
-cd flutter_to_do_v2.git
+cd flutter_to_do_v2
 ```
 3. Install dependencies:
 ```
 flutter pub get
 ```
-4. Configure Firebase:
+4. Configure Firebase (Optional):
 
-Create a new Firebase project on the Firebase Console.
-Follow the instructions to add your Android and iOS apps to the project.
-Download the google-services.json (for Android) and GoogleService-Info.plist (for iOS) configuration files and place them in the appropriate directories (android/app and ios/Runner, respectively).
-Enable Email/Password authentication and set up Cloud Firestore in the Firebase Console.
+If you want to see the firebase authentication or firebase cloud firestore console you can create your own flutter project on Firebase and connect to the local project. Then you can implement authentication and cloud firestore by following the given instructions.
+If you need help you can look at this documentations:
+- [Add-Firebase-to-your-flutter-project](https://firebase.google.com/docs/flutter/setup?platform=android)
+- [Get-Started-with-Firebase-Authentication-on-Flutter](https://firebase.google.com/docs/auth/flutter/start)
+- [Get-started-with-Cloud-Firestore](https://firebase.google.com/docs/firestore/quickstart#dart)
 
 5. Run the app:
 
@@ -68,7 +69,7 @@ flutter run
 
 
 ## Acknowledgments
-- Firebase for providing the authentication and Cloud Firestore services.
+- Firebase for providing the authentication and Cloud Firestore services. [Firebase-link](https://firebase.google.com/)
 - SQLite for local data storage. ([sqflite link](https://pub.dev/packages/sqflite))
 - flutter_bloc package for the Cubit state management. ([block link](https://pub.dev/packages/flutter_bloc))
 - get_it package for dependency injection. ([get_it link](https://pub.dev/packages/get_it))
